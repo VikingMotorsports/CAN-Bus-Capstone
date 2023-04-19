@@ -308,7 +308,7 @@ A goal of this capstone is to provide a framework to future teams to build more 
 systems. Therefore all IP generated here will be completely open source, and will be readily
 available to future teams. The license used for the repository and the project overall is the MIT License
 <p>
-<img src="https://user-images.githubusercontent.com/115724190/232935659-f7b3db55-b89d-4e2c-8d1f-258a2836e311.png">
+<img src="https://user-images.githubusercontent.com/115724190/232935659-f7b3db55-b89d-4e2c-8d1f-258a2836e311.png" | width = 100>
 </p>
 
 
