@@ -306,11 +306,11 @@ work area along with the rest of the team members as resources for our project.
 #### 5.3 Intellectual Property Discussion
 A goal of this capstone is to provide a framework to future teams to build more advanced CAN
 systems. Therefore all IP generated here will be completely open source, and will be readily
-available to future teams. The license used for the repository and the project overall is the GNU
-General Public License v3.0
+available to future teams. The license used for the repository and the project overall is the MIT License
 <p>
-<img src="https://user-images.githubusercontent.com/58315227/227732337-c3b936bc-93d9-4da0-b323-b74e78cf2f45.png">
+<img src="https://user-images.githubusercontent.com/115724190/232935659-f7b3db55-b89d-4e2c-8d1f-258a2836e311.png">
 </p>
+
 
 #### Faculty Advisor Approval
 Advisor Name: Roy Kravitz |
