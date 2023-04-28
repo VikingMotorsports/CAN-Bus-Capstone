@@ -56,8 +56,10 @@ CAN_FilterTypeDef canfil; //CAN Bus Filter
 uint32_t canMailbox; //CAN Bus Mail box variable
 
 /*I2C*/
-uint8_t transmittingBuffer[4];
-uint8_t transmittingBufferDataSize = 4;
+uint8_t buff[8];
+uint8_t transmittingBufferDataSize = 8;
+char logg[100];
+uint16_t log_len;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -110,15 +112,25 @@ int main(void)
   RetargetInit(&huart2);
 
   canfil.FilterBank = 0;
-  canfil.FilterMode = CAN_FILTERMODE_IDMASK;
+  canfil.FilterMode = CAN_FILTERMODE_IDLIST;
   canfil.FilterFIFOAssignment = CAN_RX_FIFO0;
-  canfil.FilterIdHigh = 0;
+  canfil.FilterIdHigh = 0x0A3<<5;
   canfil.FilterIdLow = 0;
-  canfil.FilterMaskIdHigh = 0;
+  canfil.FilterMaskIdHigh = 0x0A3<<5;
   canfil.FilterMaskIdLow = 0;
   canfil.FilterScale = CAN_FILTERSCALE_32BIT;
   canfil.FilterActivation = ENABLE;
-  canfil.SlaveStartFilterBank = 14;
+
+  canfil.FilterBank = 7;
+  canfil.FilterMode = CAN_FILTERMODE_IDLIST;
+  canfil.FilterFIFOAssignment = CAN_RX_FIFO0;
+  canfil.FilterIdHigh = 0x0A7<<5;
+  canfil.FilterIdLow = 0;
+  canfil.FilterMaskIdHigh = 0x0A7<<5;
+  canfil.FilterMaskIdLow = 0;
+  canfil.FilterScale = CAN_FILTERSCALE_32BIT;
+  //canfil.FilterActivation = ENABLE;
+
 
   txHeader.DLC = 8;
   txHeader.IDE = CAN_ID_STD;
@@ -127,13 +139,14 @@ int main(void)
   txHeader.ExtId = 0x02;
   txHeader.TransmitGlobalTime = DISABLE;
 
+  HAL_I2C_EnableListen_IT(&hi2c1);
+
   HAL_CAN_ConfigFilter(&hcan,&canfil);
   HAL_CAN_Start(&hcan);
   if (HAL_CAN_ActivateNotification(&hcan, CAN_IT_RX_FIFO0_MSG_PENDING) != HAL_OK)
   {
   	  Error_Handler();
   }
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -251,7 +264,7 @@ static void MX_I2C1_Init(void)
   /* USER CODE END I2C1_Init 1 */
   hi2c1.Instance = I2C1;
   hi2c1.Init.Timing = 0x2000090E;
-  hi2c1.Init.OwnAddress1 = 0;
+  hi2c1.Init.OwnAddress1 = 64;
   hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
   hi2c1.Init.OwnAddress2 = 0;
@@ -371,10 +384,29 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 	  	printf("\r\n");
 
 
-
-		HAL_I2C_Master_Transmit_IT(&hi2c1,I2C_SLAVE_ADDR<<1,canRX,8);
-
 	  }
+
+void HAL_I2C_AddrCallback(I2C_HandleTypeDef *hi2c, uint8_t transferDirection, uint16_t addressMatchCode) {
+  	for(loop = 0; loop < 8; loop++)
+  		printf("%x ", canRX[loop]);
+  	printf("\r\n");
+
+  	buff[1]=canRX[4];
+
+	HAL_I2C_Slave_Seq_Transmit_IT(hi2c, buff, transmittingBufferDataSize, I2C_NEXT_FRAME);
+
+}
+void HAL_I2C_ListenCpltCallback(I2C_HandleTypeDef *hi2c) {
+
+    HAL_I2C_EnableListen_IT(&hi2c1);
+}
+
+void HAL_I2C_SlaveTxCpltCallback(I2C_HandleTypeDef *hi2c) {
+
+	HAL_GPIO_TogglePin (GPIOB, GPIO_PIN_3);
+	log_len = sprintf(logg, "I2C Slave Data: %d, %d, %d, %d, %d, %d, %d, %d\r\n", canRX[0], canRX[1], canRX[2], canRX[3], canRX[4], canRX[5], canRX[6], canRX[7]);
+	HAL_UART_Transmit(&huart2, (uint8_t *)logg, log_len, 10);
+}
 
 
 /* USER CODE END 4 */
