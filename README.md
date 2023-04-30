@@ -1,3 +1,7 @@
+<p align="center">
+<img src="https://lh3.googleusercontent.com/keep-bbsk/AO8PoW2YxmcCyBkDVYGOGnO7EsU03sse1a7tuvkdiBRZC3rcHSZjvuQTfytg1vTVGBUzyMJdLj0WeUQrdNLQBErqNO_As_hW-Qjvel_fHgZA1ha6O9_A=s1280" | width = 500>
+</p>
+
 # VMS Can Bus Sensor Array
 
 ## Proposal Outline and Discussion
