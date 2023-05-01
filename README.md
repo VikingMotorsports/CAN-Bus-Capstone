@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://lh3.googleusercontent.com/keep-bbsk/AO8PoW2YxmcCyBkDVYGOGnO7EsU03sse1a7tuvkdiBRZC3rcHSZjvuQTfytg1vTVGBUzyMJdLj0WeUQrdNLQBErqNO_As_hW-Qjvel_fHgZA1ha6O9_A=s1280" | width = 500>
+<img src="https://user-images.githubusercontent.com/115724190/235398008-18a53a77-dd4a-4458-a9c9-c4a6cd065138.png" | width = 400>
 </p>
 
 # VMS Can Bus Sensor Array
